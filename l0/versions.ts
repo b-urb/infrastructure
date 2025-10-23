@@ -31,14 +31,14 @@ export const versions: Record<string, VersionEntry> = {
     registryUrl: "https://charts.jetstack.io"
   },
   istioBase: {
-    version: "1.27.2",
+    version: "1.27.3",
     depName: "base",
     datasource: "helm",
     versioning: "helm",
     registryUrl: "https://istio-release.storage.googleapis.com/charts"
   },
   istioD: {
-    version: "1.27.2",
+    version: "1.27.3",
     depName: "istiod",
     datasource: "helm",
     versioning: "helm",
