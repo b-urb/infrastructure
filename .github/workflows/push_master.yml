@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5.0.0
         with:
-          node-version: '22.21.1'
+          node-version: '24.11.0'
       - name: Decode kubeconfig
         run: |
           mkdir -p $HOME/.kube
@@ -53,7 +53,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 24
       - name: Install dependencies
         run: npm install -g semantic-release @saithodev/semantic-release-backmerge @semantic-release/github @semantic-release/exec
       - name: Release
