@@ -22,7 +22,7 @@ export const versions: Record<string, VersionEntry> = {
     versioning: "docker",
   },
   plane: {
-    version: "1.3.3",
+    version: "1.4.0",
     depName: "plane-ce",
     datasource: "helm",
     versioning: "helm",
