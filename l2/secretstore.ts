@@ -49,7 +49,7 @@ export function createSecretStore(k8sProvider: Provider) {
 
   // Create a SecretStore that references AWS Secrets Manager with IAM user credentials
   return new k8s.apiextensions.CustomResource("aws-secret-store", {
-    apiVersion: "external-secrets.io/v1beta1",
+    apiVersion: "external-secrets.io/v1",
     kind: "ClusterSecretStore",
     metadata: {
       name: "aws-secret-store",
