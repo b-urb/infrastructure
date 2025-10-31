@@ -16,6 +16,7 @@ export function createDirectusManual(namespace: Namespace, secret: Secret, confi
   const ingress = createDirectusIngress(website);
 }
 function createDirectusDeployments(website: WebService, secret: Secret, config: ConfigMap): Deployment {
+  const baseUrl = "mg.burbn.de"
   const url = "cms.burbn.de"
 
   const isrTokenBurbn  = new RandomPassword("isrTokenBurbn", {
@@ -175,9 +176,10 @@ function createDirectusDeployments(website: WebService, secret: Secret, config: 
                 {name: "STORAGE_AMAZON_FORCE_PATH_STYLE", value: "true"},
                 {name: "STORAGE_LOCAL_DRIVER", value: "local"},
                 {name: "EMAIL_VERIFY_SETUP", value: "true"},
-                {name: "EMAIL_FROM", value: "no-reply"+url},
+                {name: "EMAIL_FROM", value: "no-reply@"+baseUrl},
                 {name: "EMAIL_TRANSPORT", value: "mailgun"},
                 {name: "EMAIL_MAILGUN_DOMAIN", value: "mg.burbn.de"},
+                {name: "EMAIL_MAILGUN_HOST", value: "api.eu.mailgun.net"},
                 {name: "EMAIL_MAILGUN_API_KEY", valueFrom: {secretKeyRef: {name: secret.metadata.name, key: "mg-api-key"}}
                 },
                 {name:"ASSETS_TRANSFORM_IMAGE_MAX_DIMENSION", value: "8000"},

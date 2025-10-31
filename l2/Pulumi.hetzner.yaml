@@ -21,5 +21,3 @@ config:
     secure: AAABANxQrX2UjUlkvn7qqFyp5PAg6Lxt1kTtJ0Mh47+cIsUua3yZ/B6LJSHFwN3R82W3yBB4glJcjjKk
   l2:yubi-client-id:
     secure: AAABAGQXUV3oPcgNQ71AZNLWw4IazST0atdQeFK+xr1SpDkfMi4=
-  l2:mailgunKey:
-    secure: AAABAGIT3ibVy+Y1wsWMQ2faEVmIi7LrYCri1YdcTVLBKVn8+Mr7zkXkj45OXrlllpA+3IX6ZEpRGI6p3OBR5tafskORxUJXK3BulND2hrvPDg==
