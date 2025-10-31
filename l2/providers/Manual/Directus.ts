@@ -18,17 +18,30 @@ export function createDirectusManual(namespace: Namespace, secret: Secret, confi
 function createDirectusDeployments(website: WebService, secret: Secret, config: ConfigMap): Deployment {
   const url = "cms.burbn.de"
 
-  const token  = new RandomPassword("isrToken", {
+  const isrTokenBurbn  = new RandomPassword("isrTokenBurbn", {
     length: 24,
     special: false,
   });
-  const secretISR = createSecretWrapper("isr-token-secret", website.namespace, {"ISR_TOKEN":token.result})
+  const isrTokenBahrenberg  = new RandomPassword("isrTokenBahrenberg", {
+    length: 24,
+    special: false,
+  });
+
+  const secretISR = createSecretWrapper("isr-token-secret", website.namespace, {"ISR_TOKEN_BURBN":isrTokenBurbn.result, "ISR_TOKEN_BAHRENBERG": isrTokenBahrenberg.result})
   const externalSecretData: PushSecretData[] = [{
     conversionStrategy: "None",
     match: {
-      secretKey: "ISR_TOKEN",
+      secretKey: "ISR_TOKEN_BURBN",
       remoteRef: {
-        remoteKey: "ISR_TOKEN"
+        remoteKey: "ISR_TOKEN_BURBN"
+      },
+    }
+  }, {
+    conversionStrategy: "None",
+    match: {
+      secretKey: "ISR_TOKEN_BAHRENBERG",
+      remoteRef: {
+        remoteKey: "ISR_TOKEN_BAHRENBERG"
       },
     }
   }]
@@ -168,7 +181,7 @@ function createDirectusDeployments(website: WebService, secret: Secret, config: 
                 {name: "EMAIL_MAILGUN_API_KEY", valueFrom: {secretKeyRef: {name: secret.metadata.name, key: "mg-api-key"}}
                 },
                 {name:"ASSETS_TRANSFORM_IMAGE_MAX_DIMENSION", value: "8000"},
-                {name:"FLOWS_ENV_ALLOW_LIST", value: "ISR_TOKEN"}
+                {name:"FLOWS_ENV_ALLOW_LIST", value: "ISR_TOKEN_BURBN,ISR_TOKEN_BAHRENBERG"}
 
               ],
 

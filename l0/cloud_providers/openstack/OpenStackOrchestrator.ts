@@ -129,7 +129,6 @@ export class OpenStackOrchestrator {
     }, {provider: this.provider});
 
     const server = new openstack.compute.Instance(`master-${name}`, {
-      accessIpV4: "192.168.0.106",
       availabilityZone: "az1",
       keyPair: sshKeys[0].name,
       imageName: "ubuntu-22.04-x86_64",
