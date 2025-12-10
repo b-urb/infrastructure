@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v5
       - run: npm install
       - name: setup kubectl
-        uses: actions-hub/kubectl@v1.34.2
+        uses: actions-hub/kubectl@v1.34.3
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
       - name: Decode kubeconfig
