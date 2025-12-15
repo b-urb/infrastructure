@@ -18,7 +18,7 @@ jobs:
         workdir: [ l1, l2 ]
         stack: [ hetzner ]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6.1.0
         with:
           node-version: '24.12.0'
@@ -46,7 +46,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           persist-credentials: false
