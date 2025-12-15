@@ -1,3 +1,1 @@
-config:
-  l1:mailgunKey:
-    secure: AAABAALsFfS09NA/fN4RXGpkWO0dni8Qkav5K1/eo1VCRuRb7b/0Qdl7AS8QPt9MjG+6oMK0rLndjLEv1Ya7gn4zpt743MtRzT/UWIxOd4UPpQ==
+{config: {'l1:mailgunKey': {secure: AAABAJRPQrYx0FKicWnwmfY6hcUO/qAydB7/FQYp6R6AmDebwvDhOab/TB8shMntUqT8KhWOhEhChOJoohoBrk/IKPAUyi/yXsays/2nBxp9Ng==}}}

@@ -3,13 +3,13 @@ import * as aws from "@pulumi/aws";
 // s3BucketCreator.ts
 import * as pulumi from "@pulumi/pulumi";
 import {awsProvider} from "./index";
-import {Region} from "@pulumi/aws";  // Import the singleton provider
+import {getRegion, Region} from "@pulumi/aws";  // Import the singleton provider
 
 type S3BucketCredentials = {
   bucketName: pulumi.Output<string>;
   accessKeyId: pulumi.Output<string>;
   secretAccessKey: pulumi.Output<string>;
-  region: pulumi.Output<Region>;
+  region: pulumi.Output<string>;
   endpoint: pulumi.Output<string>;
 };
 

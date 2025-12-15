@@ -1,7 +1,7 @@
 {
     "name": "deploy-operator-ts",
     "devDependencies": {
-        "@types/node": "^22.0.0"
+        "@types/node": "^24.0.0"
     },
     "dependencies": {
         "@pulumi/kubernetes": "^4.0.0",

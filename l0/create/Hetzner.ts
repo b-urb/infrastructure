@@ -36,9 +36,10 @@ export function createHetznerK3S(config: pulumi.Config, clusterName: string, mai
     console.log(`File written: ${filename}`);
   });
 // Export config for other stacks and levels
-  const kubeconfig = pulumi.secret(result.kubeconfig)
+  const readKubeconfig = fs.readFileSync(filename,"utf-8")
+  const kubeconfig = pulumi.secret(readKubeconfig)
   const cluster = clusterName
-  const kubernetesProviderConfig = {kubeconfig: result.kubeconfig, cluster: clusterName, context: clusterName }
+  const kubernetesProviderConfig = {kubeconfig: readKubeconfig, cluster: clusterName, context: clusterName }
   const kubernetesProvider = new Provider("kube-provider", kubernetesProviderConfig)
 
   // install kubernetes extensions

@@ -10,49 +10,49 @@ export interface VersionEntry {
 
 export const versions: Record<string, VersionEntry> = {
   juiceCsiDriver: {
-    version: "0.30.0",
+    version: "0.30.4",
     depName: "juicefs-csi-driver",
     datasource: "helm",
     versioning: "helm",
     registryUrl: "https://juicedata.github.io/charts"
   },
   cilium: {
-    version: "1.18.2",
+    version: "1.18.4",
     depName: "cilium",
     datasource: "helm",
     versioning: "helm",
     registryUrl: "https://helm.cilium.io/"
   },
   certManager: {
-    version: "v1.18.2",
+    version: "v1.19.2",
     depName: "cert-manager",
     datasource: "helm",
     versioning: "semver-coerced",
     registryUrl: "https://charts.jetstack.io"
   },
   istioBase: {
-    version: "1.27.1",
+    version: "1.28.1",
     depName: "base",
     datasource: "helm",
     versioning: "helm",
     registryUrl: "https://istio-release.storage.googleapis.com/charts"
   },
   istioD: {
-    version: "1.27.1",
+    version: "1.28.1",
     depName: "istiod",
     datasource: "helm",
     versioning: "helm",
     registryUrl: "https://istio-release.storage.googleapis.com/charts"
   },
   hcloudCSI: {
-    version: "2.18.0",
+    version: "2.18.3",
     depName: "hcloud-csi",
     datasource: "helm",
     versioning: "helm",
     registryUrl: "https://charts.hetzner.cloud/"
   },
   externalSecrets: {
-    version: "0.20.2",
+    version: "1.1.1",
     depName: "external-secrets",
     datasource: "helm",
     versioning: "semver-coerced",
