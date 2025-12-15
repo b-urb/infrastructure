@@ -182,7 +182,7 @@ function createDirectusDeployments(website: WebService, secret: Secret, config: 
                 {name: "EMAIL_MAILGUN_HOST", value: "api.eu.mailgun.net"},
                 {name: "EMAIL_MAILGUN_API_KEY", valueFrom: {secretKeyRef: {name: secret.metadata.name, key: "mg-api-key"}}
                 },
-                {name:"ASSETS_TRANSFORM_IMAGE_MAX_DIMENSION", value: "8000"},
+                {name:"ASSETS_TRANSFORM_IMAGE_MAX_DIMENSION", value: "10000"},
                 {name:"FLOWS_ENV_ALLOW_LIST", value: "ISR_TOKEN_BURBN,ISR_TOKEN_BAHRENBERG"}
 
               ],

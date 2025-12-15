@@ -13,6 +13,8 @@ import * as aws from "@pulumi/aws"
 import {createSecretStore} from "./secretstore";
 import * as k8s from "@pulumi/kubernetes"
 import {createKubevoyage} from "./create/kubevoyage";
+import {region} from "@pulumi/aws/config";
+import {Region} from "@pulumi/aws";
 
 const config = new Config();
 const stack = getStack();
@@ -44,7 +46,7 @@ export const awsProvider = new aws.Provider("my-aws-provider", {
   accessKey: config.getSecret("aws-key"),
   secretKey: config.getSecret("aws-secret"),
   // Optional: If you are using temporary credentials, you also need to specify a session token
-  region: "eu-central-1",
+  region: Region.EUCentral1,
 });
 const kubeConfig = stackRefl0.getOutput("kubeconfig").apply(kubeconfig => interpolate`${kubeconfig}`);
 const clusterName = stackRefl0.getOutput("cluster").apply(cluster => interpolate`${cluster}`);
