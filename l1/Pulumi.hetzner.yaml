@@ -1,1 +1,1 @@
-{config: {'l1:mailgunKey': {secure: AAABAJRPQrYx0FKicWnwmfY6hcUO/qAydB7/FQYp6R6AmDebwvDhOab/TB8shMntUqT8KhWOhEhChOJoohoBrk/IKPAUyi/yXsays/2nBxp9Ng==}}}
+{config: {'l1:mailgunKey': {secure: AAABAJRPQrYx0FKicWnwmfY6hcUO/qAydB7/FQYp6R6AmDebwvDhOab/TB8shMntUqT8KhWOhEhChOJoohoBrk/IKPAUyi/yXsays/2nBxp9Ng==}, 'l1:contabo-s3-secret': {secure: AAABAGCIs4Jsrodu9oHTe7uCujFkBj6dUmdwJIGlGgHxejxMieM1UOXLXcNx2AOvxoV+/qWqCOxqH9pd9yDPAA==}, 'l1:contabo-s3-key': {secure: AAABAMem2SUGvqGNsbZ/hsTUIyly5jC7iuV8oI6+g2S4t7WGbl2FzPGM3vt+c/iysMa/Jff3JvOFyD2RnzQ2Uw==}}}

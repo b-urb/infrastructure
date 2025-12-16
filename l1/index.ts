@@ -14,6 +14,8 @@ const namespacePostgres = createNamespace("postgres");
 export const postgresNamespace = namespacePostgres.metadata.name
 //const namespaceEtcd = createNamespace("etcd")
 const config = new Config()
+const contaboS3Key = config.requireSecret("contabo-s3-key");
+const contaboS3Secret = config.requireSecret("contabo-s3-secret");
  const dbRootPassword = new RandomPassword("postgresRootPassword", {
   length: 16,
   special: true,
@@ -57,7 +59,7 @@ export const postgresRootPassword = dbRootPassword.result
 
 // Monitoring Stack (Prometheus, Grafana, Loki)
 const namespaceMonitoring = createNamespace("monitoring")
-const monitoring = createMonitoring("helm", namespaceMonitoring);
+const monitoring = createMonitoring("helm", namespaceMonitoring, contaboS3Key, contaboS3Secret);
 export const monitoringNamespace = namespaceMonitoring.metadata.name
 
 

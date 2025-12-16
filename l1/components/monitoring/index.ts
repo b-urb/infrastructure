@@ -5,9 +5,13 @@ import {createLokiHelm} from "./chart/Loki";
 import {createKubernetesMonitoringHelm} from "./chart/KubernetesMonitoring";
 import * as k8s from "@pulumi/kubernetes";
 import * as pulumi from "@pulumi/pulumi";
-import {s3UserKey, s3UserSecret} from "../../../util/env";
 
-export function createMonitoring(by: Source, namespace: Namespace) {
+export function createMonitoring(
+  by: Source,
+  namespace: Namespace,
+  s3UserKey: pulumi.Output<string>,
+  s3UserSecret: pulumi.Output<string>
+) {
   switch (by) {
     case "manual":
       throw Error("Not Implemented")

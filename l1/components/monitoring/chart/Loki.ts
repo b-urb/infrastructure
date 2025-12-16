@@ -25,18 +25,12 @@ export function createLokiHelm(namespace: Namespace, s3Secret: k8s.core.v1.Secre
             "admin": "loki-admin"
           },
           "s3": {
-            "endpoint": "eu2.contabostorage.com",
+            "endpoint": "https://eu2.contabostorage.com",
             "region": "EU",
             "s3ForcePathStyle": true,
             "insecure": false,
-            "accessKeyId": {
-              "name": s3Secret.metadata.name,
-              "key": "s3-user-key"
-            },
-            "secretAccessKey": {
-              "name": s3Secret.metadata.name,
-              "key": "s3-user-secret"
-            }
+            "accessKeyId": "${AWS_ACCESS_KEY_ID}",
+            "secretAccessKey": "${AWS_SECRET_ACCESS_KEY}"
           }
         },
         "schemaConfig": {
@@ -63,6 +57,27 @@ export function createLokiHelm(namespace: Namespace, s3Secret: k8s.core.v1.Secre
       },
       "read": {
         "replicas": 2,
+        "extraArgs": ["-config.expand-env=true"],
+        "extraEnv": [
+          {
+            "name": "AWS_ACCESS_KEY_ID",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": s3Secret.metadata.name,
+                "key": "s3-user-key"
+              }
+            }
+          },
+          {
+            "name": "AWS_SECRET_ACCESS_KEY",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": s3Secret.metadata.name,
+                "key": "s3-user-secret"
+              }
+            }
+          }
+        ],
         "resources": {
           "requests": {
             "memory": "256Mi",
@@ -81,6 +96,27 @@ export function createLokiHelm(namespace: Namespace, s3Secret: k8s.core.v1.Secre
           "storageClass": "local-path",
           "size": "10Gi"
         },
+        "extraArgs": ["-config.expand-env=true"],
+        "extraEnv": [
+          {
+            "name": "AWS_ACCESS_KEY_ID",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": s3Secret.metadata.name,
+                "key": "s3-user-key"
+              }
+            }
+          },
+          {
+            "name": "AWS_SECRET_ACCESS_KEY",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": s3Secret.metadata.name,
+                "key": "s3-user-secret"
+              }
+            }
+          }
+        ],
         "resources": {
           "requests": {
             "memory": "256Mi",
@@ -99,6 +135,27 @@ export function createLokiHelm(namespace: Namespace, s3Secret: k8s.core.v1.Secre
           "storageClass": "local-path",
           "size": "10Gi"
         },
+        "extraArgs": ["-config.expand-env=true"],
+        "extraEnv": [
+          {
+            "name": "AWS_ACCESS_KEY_ID",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": s3Secret.metadata.name,
+                "key": "s3-user-key"
+              }
+            }
+          },
+          {
+            "name": "AWS_SECRET_ACCESS_KEY",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": s3Secret.metadata.name,
+                "key": "s3-user-secret"
+              }
+            }
+          }
+        ],
         "resources": {
           "requests": {
             "memory": "256Mi",

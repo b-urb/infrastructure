@@ -16,75 +16,79 @@ export function createKubernetesMonitoringHelm(namespace: Namespace, lokiUrl: pu
         "name": "main-cluster"
       },
 
-      // Alloy Operator Configuration
-      "alloy": {
-        "enabled": true,
-        "alloy": {
-          "resources": {
-            "requests": {
-              "memory": "128Mi",
-              "cpu": "100m"
-            },
-            "limits": {
-              "memory": "512Mi",
-              "cpu": "500m"
-            }
-          }
-        }
-      },
-
-      // Logs Configuration - Send to Loki
-      "logs": {
-        "enabled": true,
-        "pod_logs": {
-          "enabled": true
+      // Destinations - v2.0+ format
+      "destinations": [
+        {
+          "name": "loki",
+          "type": "loki",
+          "url": lokiUrl,
         },
-        "cluster_events": {
-          "enabled": true
+        {
+          "name": "prometheus",
+          "type": "prometheus",
+          "url": "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090",
         }
-      },
+      ],
 
-      // External Services Configuration
-      "externalServices": {
-        "loki": {
-          "host": lokiUrl,
-          "protocol": "http",
-          "basicAuth": {
-            "username": "",
-            "password": ""
-          }
+      // Receivers - What data to collect
+      "receivers": {
+        "grpc": {
+          "enabled": false
         },
-        "prometheus": {
-          "host": "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090",
-          "protocol": "http",
-          "basicAuth": {
-            "username": "",
-            "password": ""
-          }
+        "http": {
+          "enabled": false
+        },
+        "zipkin": {
+          "enabled": false
+        },
+        "grafanaCloudMetrics": {
+          "enabled": false
         }
       },
 
-      // Metrics Configuration - Send to Prometheus
+      // Pod logs collection
+      "podLogs": {
+        "enabled": true,
+        "destinations": ["loki"]
+      },
+
+      // Metrics collection
       "metrics": {
         "enabled": true,
-        "cost": {
+        "receiver": {
+          "prometheus": "prometheus"
+        },
+        "podMonitor": {
           "enabled": true
         },
-        "node-exporter": {
+        "serviceMonitor": {
           "enabled": true
         },
         "kubeStateMetrics": {
           "enabled": false  // Already enabled in kube-prometheus-stack
+        },
+        "nodeExporter": {
+          "enabled": true
+        },
+        "kubelet": {
+          "enabled": true
+        },
+        "cadvisor": {
+          "enabled": true
+        },
+        "cost": {
+          "enabled": true
         }
       },
 
-      // Service Monitors
-      "serviceMonitor": {
-        "enabled": true
+      // Cluster events
+      "clusterEvents": {
+        "enabled": true,
+        "logFormat": "logfmt"
       },
 
-      // Resource limits for Alloy instances
-      "alloy-logs": {
+      // Alloy configuration
+      "alloy": {
         "alloy": {
           "resources": {
             "requests": {
@@ -99,7 +103,8 @@ export function createKubernetesMonitoringHelm(namespace: Namespace, lokiUrl: pu
         }
       },
 
-      "alloy-metrics": {
+      "alloy-logs": {
+        "enabled": true,
         "alloy": {
           "resources": {
             "requests": {
@@ -109,6 +114,39 @@ export function createKubernetesMonitoringHelm(namespace: Namespace, lokiUrl: pu
             "limits": {
               "memory": "512Mi",
               "cpu": "500m"
+            }
+          }
+        }
+      },
+
+      "alloy-events": {
+        "enabled": true,
+        "alloy": {
+          "resources": {
+            "requests": {
+              "memory": "64Mi",
+              "cpu": "50m"
+            },
+            "limits": {
+              "memory": "256Mi",
+              "cpu": "200m"
+            }
+          }
+        }
+      },
+
+      // Singleton collector required for cluster events
+      "alloy-singleton": {
+        "enabled": true,
+        "alloy": {
+          "resources": {
+            "requests": {
+              "memory": "64Mi",
+              "cpu": "50m"
+            },
+            "limits": {
+              "memory": "256Mi",
+              "cpu": "200m"
             }
           }
         }

@@ -86,6 +86,15 @@ export function createPrometheusStackHelm(namespace: Namespace, thanosObjstoreSe
         }
       },
       "prometheusOperator": {
+        "admissionWebhooks": {
+          "enabled": true,
+          "patch": {
+            "enabled": true,
+            "image": {
+              "pullPolicy": "IfNotPresent"
+            }
+          }
+        },
         "resources": {
           "requests": {
             "memory": "128Mi",
