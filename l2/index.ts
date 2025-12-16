@@ -110,15 +110,15 @@ createKubevoyage(postgresProvider, stackRef, config)
 //createPlane(postgresProvider, stackRef, config)
 
 
-const umamiCredentials = createDBCredentials("umami")
-
-// Create apps for general usage
-//export const namespaceMedusa = createNamespace("medusa")
-export const namespaceUmami = createNamespace("umami")
-export const umamiSecret = {
-  "db-connection-string": interpolate`postgresql://${umamiCredentials.user}:${umamiCredentials.password}@${postgresUrl}:5432/${umamiCredentials.db}`
-}
-createUmami("manual", namespaceUmami, createUmamiSecret(namespaceUmami, umamiSecret))
+// const umamiCredentials = createDBCredentials("umami")
+//
+// // Create apps for general usage
+// //export const namespaceMedusa = createNamespace("medusa")
+// export const namespaceUmami = createNamespace("umami")
+// export const umamiSecret = {
+//   "db-connection-string": interpolate`postgresql://${umamiCredentials.user}:${umamiCredentials.password}@${postgresUrl}:5432/${umamiCredentials.db}`
+// }
+// createUmami("manual", namespaceUmami, createUmamiSecret(namespaceUmami, umamiSecret))
 
 const yubiClientSecret = config.getSecret("yubi-client-secret")
 const yubiClientId = config.getSecret("yubi-client-id")

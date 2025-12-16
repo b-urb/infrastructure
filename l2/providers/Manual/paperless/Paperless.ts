@@ -5,7 +5,7 @@ import {ConfigMap, Namespace, Secret} from "@pulumi/kubernetes/core/v1";
 
 export function createPaperless(namespace: Namespace, secret: Secret, config: ConfigMap) {
   const url = "docs.burbn.de"
-  const memoryLimit = "3000"
+  const memoryLimit = "1536"
 // Tika Deployment
   const tikaDeployment = new k8s.apps.v1.Deployment("tika-deployment", {
     metadata: {
@@ -22,11 +22,11 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
             resources: {
               requests: {
                 memory: "200Mi",
-                cpu: "300m"
+                cpu: "100m"
               },
               limits: {
-                memory: "1Gi",
-                cpu: "700m"
+                memory: "512Mi",
+                cpu: "500m"
               }
             },
             name: "tika",
@@ -67,12 +67,12 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
             image: "docker.io/gotenberg/gotenberg:7.8",
             resources: {
               requests: {
-                memory: "300Mi",
-                cpu: "300m"
+                memory: "256Mi",
+                cpu: "100m"
               },
               limits: {
-                memory: "1Gi",
-                cpu: "700m"
+                memory: "512Mi",
+                cpu: "500m"
               }
             },
             command: [
@@ -164,11 +164,11 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
             resources: {
               requests: {
                 memory: "512Mi",
-                cpu: "1000m"
+                cpu: "500m"
               },
               limits: {
                 memory: `${memoryLimit}Mi`,
-                cpu: "3000m"
+                cpu: "1500m"
               }
             },
             env: [

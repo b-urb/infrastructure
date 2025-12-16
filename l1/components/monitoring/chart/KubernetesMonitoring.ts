@@ -49,6 +49,8 @@ export function createKubernetesMonitoringHelm(namespace: Namespace, lokiUrl: pu
       // Pod logs collection
       "podLogs": {
         "enabled": true,
+        // Explicitly use the DaemonSet collector; avoids the singleton Deployment grabbing logs
+        "collector": "alloy-logs",
         "destinations": ["loki"]
       },
 
@@ -87,33 +89,24 @@ export function createKubernetesMonitoringHelm(namespace: Namespace, lokiUrl: pu
         "logFormat": "logfmt"
       },
 
-      // Alloy configuration
+      // Disable the default Alloy Deployment (we use the explicit collectors below)
       "alloy": {
-        "alloy": {
-          "resources": {
-            "requests": {
-              "memory": "128Mi",
-              "cpu": "100m"
-            },
-            "limits": {
-              "memory": "512Mi",
-              "cpu": "500m"
-            }
-          }
-        }
+        "enabled": false
       },
 
       "alloy-logs": {
         "enabled": true,
+        // Ensure this collector always has the Loki destination even if other features change
+        "includeDestinations": ["loki"],
         "alloy": {
           "resources": {
             "requests": {
-              "memory": "128Mi",
-              "cpu": "100m"
+              "memory": "64Mi",
+              "cpu": "50m"
             },
             "limits": {
-              "memory": "512Mi",
-              "cpu": "500m"
+              "memory": "256Mi",
+              "cpu": "250m"
             }
           }
         }
@@ -124,12 +117,12 @@ export function createKubernetesMonitoringHelm(namespace: Namespace, lokiUrl: pu
         "alloy": {
           "resources": {
             "requests": {
-              "memory": "64Mi",
-              "cpu": "50m"
+              "memory": "32Mi",
+              "cpu": "25m"
             },
             "limits": {
-              "memory": "256Mi",
-              "cpu": "200m"
+              "memory": "128Mi",
+              "cpu": "100m"
             }
           }
         }
@@ -141,12 +134,12 @@ export function createKubernetesMonitoringHelm(namespace: Namespace, lokiUrl: pu
         "alloy": {
           "resources": {
             "requests": {
-              "memory": "64Mi",
-              "cpu": "50m"
+              "memory": "32Mi",
+              "cpu": "25m"
             },
             "limits": {
-              "memory": "256Mi",
-              "cpu": "200m"
+              "memory": "128Mi",
+              "cpu": "100m"
             }
           }
         }

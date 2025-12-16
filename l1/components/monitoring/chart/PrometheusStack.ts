@@ -1,8 +1,14 @@
 import * as k8s from "@pulumi/kubernetes"
+import * as pulumi from "@pulumi/pulumi";
 import {Namespace} from "@pulumi/kubernetes/core/v1";
 import versions from "../../../versions";
 
-export function createPrometheusStackHelm(namespace: Namespace, thanosObjstoreSecret: k8s.core.v1.Secret) {
+export function createPrometheusStackHelm(
+  namespace: Namespace,
+  thanosObjstoreSecret: k8s.core.v1.Secret,
+  grafanaAdminMail: string,
+  grafanaAdminPassword: pulumi.Output<string>
+) {
   return new k8s.helm.v4.Chart("kube-prometheus-stack", {
     chart: "kube-prometheus-stack",
     namespace: namespace.metadata.name,
@@ -25,34 +31,53 @@ export function createPrometheusStackHelm(namespace: Namespace, thanosObjstoreSe
           },
           "resources": {
             "requests": {
-              "memory": "512Mi",
-              "cpu": "500m"
+              "memory": "384Mi",
+              "cpu": "250m"
             },
             "limits": {
-              "memory": "2Gi",
-              "cpu": "2000m"
+              "memory": "768Mi",
+              "cpu": "750m"
             }
           }
         }
       },
       "grafana": {
         "enabled": true,
-        "adminPassword": "admin", // Change this in production
+        "adminUser": grafanaAdminMail,
+        "adminPassword": grafanaAdminPassword,
         "persistence": {
           "enabled": true,
           "storageClassName": "local-path",
           "size": "10Gi"
         },
+        "additionalDataSources": [{
+          "name": "Loki",
+          "type": "loki",
+          "access": "proxy",
+          "url": "http://loki-gateway.monitoring.svc.cluster.local",
+          "jsonData": {
+            "maxLines": 1000
+          }
+        }],
         "ingress": {
-          "enabled": false // Enable and configure as needed
+          "enabled": true,
+          "ingressClassName": "traefik",
+          "annotations": {
+            "cert-manager.io/cluster-issuer": "letsencrypt"
+          },
+          "hosts": ["grafana.burbn.de"],
+          "tls": [{
+            "secretName": "grafana-tls",
+            "hosts": ["grafana.burbn.de"]
+          }]
         },
         "resources": {
           "requests": {
-            "memory": "128Mi",
-            "cpu": "100m"
+            "memory": "96Mi",
+            "cpu": "50m"
           },
           "limits": {
-            "memory": "512Mi",
+            "memory": "384Mi",
             "cpu": "500m"
           }
         }
@@ -75,12 +100,12 @@ export function createPrometheusStackHelm(namespace: Namespace, thanosObjstoreSe
           },
           "resources": {
             "requests": {
-              "memory": "128Mi",
-              "cpu": "100m"
+              "memory": "64Mi",
+              "cpu": "50m"
             },
             "limits": {
-              "memory": "512Mi",
-              "cpu": "500m"
+              "memory": "256Mi",
+              "cpu": "200m"
             }
           }
         }
@@ -88,21 +113,21 @@ export function createPrometheusStackHelm(namespace: Namespace, thanosObjstoreSe
       "prometheusOperator": {
         "admissionWebhooks": {
           "enabled": true,
+          "certManager": {
+            "enabled": true
+          },
           "patch": {
-            "enabled": true,
-            "image": {
-              "pullPolicy": "IfNotPresent"
-            }
+            "enabled": false
           }
         },
         "resources": {
           "requests": {
-            "memory": "128Mi",
-            "cpu": "100m"
+            "memory": "64Mi",
+            "cpu": "50m"
           },
           "limits": {
-            "memory": "512Mi",
-            "cpu": "500m"
+            "memory": "256Mi",
+            "cpu": "200m"
           }
         }
       },
