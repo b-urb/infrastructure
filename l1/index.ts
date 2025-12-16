@@ -9,6 +9,7 @@ import {Secret} from "@pulumi/kubernetes/core/v1";
 import {createSurrealManual} from "./components/surrealdb/Manual/Surreal";
 import {createPostgres} from "./components/postgres";
 import {createRedis} from "./redis";
+import {createMonitoring} from "./components/monitoring";
 const namespacePostgres = createNamespace("postgres");
 export const postgresNamespace = namespacePostgres.metadata.name
 //const namespaceEtcd = createNamespace("etcd")
@@ -53,6 +54,11 @@ export const mailgunKey =  config.requireSecret("mailgunKey") //TODO: Replace wi
 const namespaceRedis = createNamespace("redis")
 const redis = createRedis("helm",namespaceRedis); //FIXME: Update chart
 export const postgresRootPassword = dbRootPassword.result
+
+// Monitoring Stack (Prometheus, Grafana, Loki)
+const namespaceMonitoring = createNamespace("monitoring")
+const monitoring = createMonitoring("helm", namespaceMonitoring);
+export const monitoringNamespace = namespaceMonitoring.metadata.name
 
 
 export function createBasicAuthSecret(user: string, password: string) {

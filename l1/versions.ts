@@ -29,6 +29,27 @@ export const versions: Record<string, VersionEntry> = {
     versioning: "helm",
     registryUrl: "oci://registry-1.docker.io/bitnamicharts/postgresql"
   },
+  kubePrometheusStack: {
+    version: "80.4.1",
+    depName: "kube-prometheus-stack",
+    datasource: "helm",
+    versioning: "helm",
+    registryUrl: "https://prometheus-community.github.io/helm-charts"
+  },
+  loki: {
+    version: "6.49.0",
+    depName: "loki",
+    datasource: "helm",
+    versioning: "helm",
+    registryUrl: "https://grafana.github.io/helm-charts"
+  },
+  kubernetesMonitoring: {
+    version: "3.6.2",
+    depName: "k8s-monitoring",
+    datasource: "helm",
+    versioning: "helm",
+    registryUrl: "https://grafana.github.io/helm-charts"
+  },
 };
 
 export default versions;
