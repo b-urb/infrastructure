@@ -1,5 +1,6 @@
 /bin/
 /node_modules/
+pnpm-store
 urban.yaml
 urban-dev.yaml
 clouds.yaml
