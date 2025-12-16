@@ -12,6 +12,18 @@ export function installCilium(opts: CustomResourceOptions) {
     repositoryOpts: {
       repo: versions.cilium.registryUrl,
     },
+    values: {
+      securityContext: {
+        capabilities: {
+          ciliumAgent: ["SYS_ADMIN", "NET_ADMIN", "SYS_MODULE", "SYS_RESOURCE", "IPC_LOCK"],
+          cleanCiliumState: ["NET_ADMIN", "SYS_ADMIN", "SYS_RESOURCE"]
+        }
+      },
+      // Disable toFQDNs DNS proxy to avoid conflict with K3s CoreDNS
+      toFQDNs: {
+        enabled: false
+      }
+    }
   }, opts)
 }
 

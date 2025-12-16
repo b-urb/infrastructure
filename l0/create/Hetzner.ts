@@ -29,7 +29,7 @@ export function createHetznerK3S(config: pulumi.Config, clusterName: string, mai
     length: 30
   })
   const k3sCluster = new K3sCluster(hetznerOrchestrator, provider, hcloudToken, k3sToken);
-  const result = k3sCluster.createCluster(clusterName, true, 1, 1)
+  const result = k3sCluster.createCluster(clusterName, true, 1, 2)
 // Write to a file
   result.kubeconfig.apply(value => {
     fs.writeFileSync(filename, value, 'utf8');
