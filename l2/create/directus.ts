@@ -18,6 +18,9 @@ export function createDirectus(postgresProvider: Provider, stackRef: StackRefere
   const adminPassword = new RandomPassword("admin-password", {length: 19, special: true}).result.apply(
       password => interpolate`${password}`
   )
+  const metricsToken = new RandomPassword("metrics-token", {length: 32, special: false}).result.apply(
+      password => interpolate`${password}`
+  )
   const mailgunKey = stackRef.getOutput("mailgunKey").apply(authPW => interpolate`${authPW}`)
   const postgresUrl = stackRef.getOutput("postgresUrl").apply(url => interpolate`${url}`)
 
@@ -55,7 +58,8 @@ export function createDirectus(postgresProvider: Provider, stackRef: StackRefere
     "aws-s3-user-key": directusBucket.accessKeyId,
 
     "mg-api-key": mailgunKey,
-    "directus-secret": directusSecretKey
+    "directus-secret": directusSecretKey,
+    "metrics-token": metricsToken
   }
   const directusConfigMapData = {
     PUBLIC_URL: "https://cms.burbn.de",
@@ -75,7 +79,8 @@ export function createDirectus(postgresProvider: Provider, stackRef: StackRefere
   const directusConfig: DirectusConfig = {
     namespace: namespaceDirectus,
     secret: createDirectusSecret("directus", namespaceDirectus, directusSecret),
-    config: createDirectusConfigMap(directusConfigMapData)
+    config: createDirectusConfigMap(directusConfigMapData),
+    metricsToken: metricsToken
   }
   const directus = createDirectusResources("manual", directusConfig);
 }

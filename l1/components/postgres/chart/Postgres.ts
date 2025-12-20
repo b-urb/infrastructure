@@ -13,6 +13,12 @@ export function createPostgresHelm(namespace: Namespace, dbRootPassword: RandomP
         namespace: namespace.metadata.name,
         version:versions.postgresql.version ,
         values: {
+         "commonLabels": {
+           "app": "postgres",
+           "component": "database",
+           "managed-by": "pulumi",
+           "service-criticality": "1"
+         },
          "global": {
            "postgresql":{
              "auth": {

@@ -58,7 +58,14 @@ export function createS3Bucket(bucketName: string): S3BucketCredentials {
 function createDirectusS3Service() {
   return new k8s.core.v1.Service("directus-s3", {
     "metadata": {
-      name: "directus-s3"
+      name: "directus-s3",
+      labels: {
+        "app": "directus-s3",
+        "component": "storage",
+        "managed-by": "pulumi",
+        "name": "directus-s3",
+        "service-criticality": "3"
+      }
     }, spec: {
       type: "ExternalName",
       externalName: "minio.minio.svc.cluster.local",

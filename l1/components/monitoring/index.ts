@@ -10,7 +10,9 @@ export function createMonitoring(
   by: Source,
   namespace: Namespace,
   s3UserKey: pulumi.Output<string>,
-  s3UserSecret: pulumi.Output<string>
+  s3UserSecret: pulumi.Output<string>,
+  grafanaAdminMail: string,
+  grafanaAdminPassword: pulumi.Output<string>
 ) {
   switch (by) {
     case "manual":
@@ -59,11 +61,12 @@ config:
       });
 
       // Deploy monitoring stack
-      const prometheusStack = createPrometheusStackHelm(namespace, thanosSecret);
+      const prometheusStack = createPrometheusStackHelm(namespace, thanosSecret, grafanaAdminMail, grafanaAdminPassword);
       const loki = createLokiHelm(namespace, s3Secret);
 
       // Construct Loki gateway URL
-      const lokiUrl = pulumi.interpolate`http://loki-gateway.${namespace.metadata.name}.svc.cluster.local`;
+      // Loki push endpoint (k8s-monitoring expects the full /loki/api/v1/push path)
+      const lokiUrl = pulumi.interpolate`http://loki-gateway.${namespace.metadata.name}.svc.cluster.local/loki/api/v1/push`;
 
       const kubernetesMonitoring = createKubernetesMonitoringHelm(namespace, lokiUrl);
 

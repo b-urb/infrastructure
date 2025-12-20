@@ -153,11 +153,20 @@ function createMedusaAdminDeployment(website: WebService): Deployment {
 
 
 function createMedusaService(webservice: WebService): k8s.core.v1.Service {
+  const component = webservice.name === "medusa-admin" ? "ecommerce-admin" : "ecommerce-backend";
 
   return new k8s.core.v1.Service(webservice.name, {
     "metadata": {
       name: webservice.name,
-      namespace: webservice.namespace.metadata.name
+      namespace: webservice.namespace.metadata.name,
+      labels: {
+        "app": webservice.name,
+        "component": component,
+        "managed-by": "pulumi",
+        "version": webservice.imageTag,
+        "name": webservice.name,
+        "service-criticality": "3"
+      }
     },
     "spec": {
       "ports": [

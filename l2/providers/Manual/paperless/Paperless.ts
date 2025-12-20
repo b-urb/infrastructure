@@ -5,7 +5,7 @@ import {ConfigMap, Namespace, Secret} from "@pulumi/kubernetes/core/v1";
 
 export function createPaperless(namespace: Namespace, secret: Secret, config: ConfigMap) {
   const url = "docs.burbn.de"
-  const memoryLimit = "3000"
+  const memoryLimit = "1536"
 // Tika Deployment
   const tikaDeployment = new k8s.apps.v1.Deployment("tika-deployment", {
     metadata: {
@@ -22,11 +22,11 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
             resources: {
               requests: {
                 memory: "200Mi",
-                cpu: "300m"
+                cpu: "100m"
               },
               limits: {
-                memory: "1Gi",
-                cpu: "700m"
+                memory: "512Mi",
+                cpu: "500m"
               }
             },
             name: "tika",
@@ -41,7 +41,15 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
   const tikaService = new k8s.core.v1.Service("tika-service", {
     metadata: {
       name: "tika",
-      namespace: namespace.metadata.name
+      namespace: namespace.metadata.name,
+      labels: {
+        "app": "tika",
+        "component": "text-extraction",
+        "managed-by": "pulumi",
+        "version": "latest",
+        "name": "tika",
+        "service-criticality": "3"
+      }
     },
     spec: {
       selector: {app: "tika"},
@@ -67,12 +75,12 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
             image: "docker.io/gotenberg/gotenberg:7.8",
             resources: {
               requests: {
-                memory: "300Mi",
-                cpu: "300m"
+                memory: "256Mi",
+                cpu: "100m"
               },
               limits: {
-                memory: "1Gi",
-                cpu: "700m"
+                memory: "512Mi",
+                cpu: "500m"
               }
             },
             command: [
@@ -90,7 +98,15 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
   const gotenbergService = new k8s.core.v1.Service("gotenberg-service", {
     metadata: {
       name: "gotenberg",
-      namespace: namespace.metadata.name
+      namespace: namespace.metadata.name,
+      labels: {
+        "app": "gotenberg",
+        "component": "document-conversion",
+        "managed-by": "pulumi",
+        "version": "7.8",
+        "name": "gotenberg",
+        "service-criticality": "3"
+      }
     },
     spec: {
       selector: {app: "gotenberg"},
@@ -102,7 +118,15 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
   const paperlessService = new k8s.core.v1.Service("paperless-service", {
     metadata: {
       name: "paperless",
-      namespace: namespace.metadata.name
+      namespace: namespace.metadata.name,
+      labels: {
+        "app": "paperless",
+        "component": "document-management",
+        "managed-by": "pulumi",
+        "version": "latest",
+        "name": "paperless",
+        "service-criticality": "3"
+      }
     },
     spec: {
       selector: {app: "paperless"},
@@ -164,11 +188,11 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
             resources: {
               requests: {
                 memory: "512Mi",
-                cpu: "1000m"
+                cpu: "500m"
               },
               limits: {
                 memory: `${memoryLimit}Mi`,
-                cpu: "3000m"
+                cpu: "1500m"
               }
             },
             env: [
