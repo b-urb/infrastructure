@@ -7,3 +7,14 @@ export const basicAuth2Annotation = {
   "ingress.kubernetes.io/auth-type": "basic",
   "ingress.kubernetes.io/auth-secret": "basic-auth"
 }
+
+/**
+ * Toleration for scheduling workloads on master nodes.
+ * Use this for critical workloads (databases, monitoring, etc.) that should run on masters.
+ */
+export const masterScheduleAllowed = {
+  key: "node-role",
+  operator: "Equal" as const,
+  value: "master",
+  effect: "NoSchedule" as const
+};

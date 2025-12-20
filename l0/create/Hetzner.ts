@@ -15,9 +15,10 @@ import {Namespace} from "@pulumi/kubernetes/core/v1";
 import {Provider} from "@pulumi/kubernetes";
 import {Input} from "@pulumi/pulumi";
 import {installPulumiOperator} from "../components/pulumi-operator/chart";
+import {ClusterSpecOutput, ClusterProvider} from "../k3s/types";
 
 
-export function createHetznerK3S(config: pulumi.Config, clusterName: string, mail: Input<string>) {
+export function createHetznerK3S(config: pulumi.Config, clusterName: string, mail: Input<string>): ClusterSpecOutput {
   const filename = `${clusterName}.yaml`;
   const hcloudToken = config.requireSecret("hcloudToken");
   const datacenterId = "fsn1-dc14"
@@ -29,17 +30,12 @@ export function createHetznerK3S(config: pulumi.Config, clusterName: string, mai
     length: 30
   })
   const k3sCluster = new K3sCluster(hetznerOrchestrator, provider, hcloudToken, k3sToken);
-  const result = k3sCluster.createCluster(clusterName, true, 1, 2)
+  const result = k3sCluster.createCluster(clusterName, true, 1, 0)
 // Write to a file
-  result.kubeconfig.apply(value => {
-    fs.writeFileSync(filename, value, 'utf8');
-    console.log(`File written: ${filename}`);
-  });
 // Export config for other stacks and levels
-  const readKubeconfig = fs.readFileSync(filename,"utf-8")
-  const kubeconfig = pulumi.secret(readKubeconfig)
+  const kubeconfig = pulumi.secret(result.kubeconfig)
   const cluster = clusterName
-  const kubernetesProviderConfig = {kubeconfig: readKubeconfig, cluster: clusterName, context: clusterName }
+  const kubernetesProviderConfig = {kubeconfig: result.kubeconfig, cluster: clusterName, context: clusterName }
   const kubernetesProvider = new Provider("kube-provider", kubernetesProviderConfig)
 
   // install kubernetes extensions
@@ -61,5 +57,24 @@ export function createHetznerK3S(config: pulumi.Config, clusterName: string, mai
   )
  // const pulumiOperator = installPulumiOperator(pulumiAccessToken!!, pulumiOperatorNamespace, {provider: kubernetesProvider})
 
-  return {kubeconfig: kubeconfig, cluster: pulumi.output(cluster)}
+  return {
+    name: pulumi.output(clusterName),
+    provider: "hetzner" as ClusterProvider,
+    masterIp: result.ip,
+    k3sToken: pulumi.secret(k3sToken.result),
+    sshKey: result.sshKey,
+    kubeconfig: result.kubeconfig,
+    kubeconfigCommand: result["kubeconfig-command"],
+    // Note: createCluster is called with (clusterName, true, 1, 2)
+    // This creates 1 initial master + 1 additional master + 2 workers
+    nodes: [
+      { id: "master-main", role: "master", serverType: "cax21" },
+      { id: "master-1", role: "master", serverType: "cax21" },
+      ...Array.from({ length: 2 }, (_, i) => ({
+        id: `node-${i}`,
+        role: "worker" as const,
+        serverType: "cax21"
+      })),
+    ],
+  }
 }

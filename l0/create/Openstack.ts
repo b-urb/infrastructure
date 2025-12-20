@@ -35,11 +35,6 @@ export function createOpenstackK3S(config: pulumi.Config, clusterName: string, m
   })
   const k3sCluster = new K3sClusterDev(openstackOrchestrator, provider, k3sToken);
   const result = k3sCluster.createCluster(clusterName, true, 1, 0)
-// Write to a file
-  result.kubeconfig.apply(value => {
-    fs.writeFileSync(filename, value, 'utf8');
-    console.log(`File written: ${filename}`);
-  });
   const kubernetesProviderConfig = {kubeconfig: result.kubeconfig, cluster: clusterName, context: clusterName}
 // Export config for other stacks and levels
   const cluster = clusterName

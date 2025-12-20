@@ -4,13 +4,14 @@ import * as command from "@pulumi/command"
 import * as pulumi from "@pulumi/pulumi";
 import * as hcloud from "@pulumi/hcloud";
 import {CloudProviderTypes} from "../common/types/cloudProviderTypes";
-import {masterConfig, workerConfig} from "./cloudinit";
+import {masterConfig, workerConfig, nodeConfigDynamic} from "./cloudinit";
 import {Input} from "@pulumi/pulumi";
 import {HCloudOrchestrator} from "../cloud_providers/hetzner/HCloudOrchestrator";
 import * as tls from "@pulumi/tls";
 import {PrivateKey} from "@pulumi/tls";
 import {updateKubeConfig} from "../utils";
 import {RandomPassword} from "@pulumi/random";
+import {K3sNodeConfig, NodeDescriptor, ClusterResult} from "./types";
 
 
 export class K3sCluster<T extends keyof CloudProviderTypes> {
@@ -136,5 +137,3 @@ export class K3sCluster<T extends keyof CloudProviderTypes> {
     return fetchKubeconfig;
   }
 }
-
-

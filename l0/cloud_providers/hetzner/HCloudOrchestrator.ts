@@ -39,6 +39,7 @@ this.provider = provider
       serverType: string,
       userData: Input<string>,
       name: string,
+      additionalOptions?: pulumi.ResourceOptions  // Optional resource options for protection, etc.
   ) {
 
 
@@ -78,7 +79,10 @@ this.provider = provider
       networks: [{
         networkId: network.id.apply(id => parseInt(id)),
       }],
-    }, {provider: this.provider});
+    }, {
+      provider: this.provider,
+      ...additionalOptions  // Merge in protection and other options
+    });
     //this.attachVolumeToServer(volume, server)
     return server
   }

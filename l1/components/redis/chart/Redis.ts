@@ -9,6 +9,11 @@ export function createRedisHelm(namespace: Namespace) {
         namespace: namespace.metadata.name,
         version: versions.redis.version,
         values: {
+          "image": {
+            "registry": "docker.io",
+            "repository": "bitnamilegacy/redis",
+            "tag": "8.2.1-debian-12-r0"
+          },
           "commonLabels": {
             "app": "redis",
             "component": "cache",
@@ -16,6 +21,9 @@ export function createRedisHelm(namespace: Namespace) {
             "service-criticality": "1"
           },
           "global": {
+            "security": {
+              "allowInsecureImages": true
+            },
             "redis":{
                 "password": redisDBPassword,
             },

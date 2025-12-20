@@ -13,6 +13,11 @@ export function createPostgresHelm(namespace: Namespace, dbRootPassword: RandomP
         namespace: namespace.metadata.name,
         version:versions.postgresql.version ,
         values: {
+         "image": {
+           "registry": "docker.io",
+           "repository": "bitnamilegacy/postgresql",
+           "tag": "17.6.0-debian-12-r4"
+         },
          "commonLabels": {
            "app": "postgres",
            "component": "database",
@@ -20,6 +25,9 @@ export function createPostgresHelm(namespace: Namespace, dbRootPassword: RandomP
            "service-criticality": "1"
          },
          "global": {
+           "security": {
+             "allowInsecureImages": true
+           },
            "postgresql":{
              "auth": {
                "database": "applications",
