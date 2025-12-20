@@ -17,10 +17,17 @@ export function createPrometheusStackHelm(
       repo: versions.kubePrometheusStack.registryUrl!!,
     },
     values: {
+      "commonLabels": {
+        "app": "kube-prometheus-stack",
+        "component": "monitoring",
+        "managed-by": "pulumi",
+        "service-criticality": "1"
+      },
       "prometheus": {
         "prometheusSpec": {
           "retention": "15d",
           "retentionSize": "50GB",
+          "enableRemoteWriteReceiver": true,
           "thanos": {
             "baseImage": "quay.io/thanos/thanos",
             "version": "v0.36.1",

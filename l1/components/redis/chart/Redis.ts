@@ -9,6 +9,12 @@ export function createRedisHelm(namespace: Namespace) {
         namespace: namespace.metadata.name,
         version: versions.redis.version,
         values: {
+          "commonLabels": {
+            "app": "redis",
+            "component": "cache",
+            "managed-by": "pulumi",
+            "service-criticality": "1"
+          },
           "global": {
             "redis":{
                 "password": redisDBPassword,

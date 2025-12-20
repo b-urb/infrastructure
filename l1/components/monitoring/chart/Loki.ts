@@ -11,6 +11,12 @@ export function createLokiHelm(namespace: Namespace, s3Secret: k8s.core.v1.Secre
       repo: versions.loki.registryUrl!!,
     },
     values: {
+      "commonLabels": {
+        "app": "loki",
+        "component": "logging",
+        "managed-by": "pulumi",
+        "service-criticality": "1"
+      },
       "deploymentMode": "SimpleScalable",
       "loki": {
         "auth_enabled": false,

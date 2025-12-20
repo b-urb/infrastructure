@@ -10,6 +10,12 @@ export function createEtcd(namespace: Namespace, secret: Secret) {
       repo: "https://charts.bitnami.com/bitnami"
     },
     values: {
+      "commonLabels": {
+        "app": "etcd",
+        "component": "key-value-store",
+        "managed-by": "pulumi",
+        "service-criticality": "2"
+      },
       "auth":
           {
             "rbac": {

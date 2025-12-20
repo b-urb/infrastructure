@@ -1,6 +1,7 @@
 import {ConfigMap, Namespace, Secret} from "@pulumi/kubernetes/core/v1";
 import {adminMail, adminPassword, mailgunKey, s3UserKey, s3UserSecret} from "./env";
 import {RandomPassword} from "@pulumi/random";
+import * as pulumi from "@pulumi/pulumi";
 
 export type Source = "helm" | "aws" | "manual" | "gke" | "azure"
 
@@ -8,6 +9,7 @@ export interface DirectusConfig  {
   namespace: Namespace;
   secret: Secret;
   config: ConfigMap;
+  metricsToken: pulumi.Output<string>;
 }
 
 export type Stage = "prod" | "dev" | "experimental"

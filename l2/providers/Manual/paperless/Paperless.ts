@@ -41,7 +41,15 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
   const tikaService = new k8s.core.v1.Service("tika-service", {
     metadata: {
       name: "tika",
-      namespace: namespace.metadata.name
+      namespace: namespace.metadata.name,
+      labels: {
+        "app": "tika",
+        "component": "text-extraction",
+        "managed-by": "pulumi",
+        "version": "latest",
+        "name": "tika",
+        "service-criticality": "3"
+      }
     },
     spec: {
       selector: {app: "tika"},
@@ -90,7 +98,15 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
   const gotenbergService = new k8s.core.v1.Service("gotenberg-service", {
     metadata: {
       name: "gotenberg",
-      namespace: namespace.metadata.name
+      namespace: namespace.metadata.name,
+      labels: {
+        "app": "gotenberg",
+        "component": "document-conversion",
+        "managed-by": "pulumi",
+        "version": "7.8",
+        "name": "gotenberg",
+        "service-criticality": "3"
+      }
     },
     spec: {
       selector: {app: "gotenberg"},
@@ -102,7 +118,15 @@ export function createPaperless(namespace: Namespace, secret: Secret, config: Co
   const paperlessService = new k8s.core.v1.Service("paperless-service", {
     metadata: {
       name: "paperless",
-      namespace: namespace.metadata.name
+      namespace: namespace.metadata.name,
+      labels: {
+        "app": "paperless",
+        "component": "document-management",
+        "managed-by": "pulumi",
+        "version": "latest",
+        "name": "paperless",
+        "service-criticality": "3"
+      }
     },
     spec: {
       selector: {app: "paperless"},

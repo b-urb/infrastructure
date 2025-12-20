@@ -1,4 +1,5 @@
 import * as k8s from "@pulumi/kubernetes"
+import * as pulumi from "@pulumi/pulumi";
 import {WebService} from "../../types/WebService";
 import {Deployment} from "@pulumi/kubernetes/apps/v1";
 import {ConfigMap, Namespace, Secret} from "@pulumi/kubernetes/core/v1";
@@ -6,14 +7,20 @@ import {createExternalPushSecret, createSecretWrapper, PushSecretData, PushSecre
 import {RandomPassword} from "@pulumi/random";
 import {kubernetesProvider} from "../../index";
 import {versions} from "../../versions"
+import {DirectusConfig} from "../../../util/types";
 
-export function createDirectusManual(namespace: Namespace, secret: Secret, config: ConfigMap) {
+export function createDirectusManual(params: DirectusConfig) {
+  const { namespace, secret, config, metricsToken } = params;
   const url = "cms.burbn.de"
   const website =  new WebService("directus", url, namespace, "directus/directus", versions.directus.version, {}, "prod");
 
   const deployment = createDirectusDeployments(website, secret, config);
   const service = createDirectusService(website);
   const ingress = createDirectusIngress(website);
+
+  // Add metrics monitoring
+  const metricsAuthSecret = createDirectusMetricsSecret(website, metricsToken);
+  const serviceMonitor = createDirectusServiceMonitor(website, metricsAuthSecret);
 }
 function createDirectusDeployments(website: WebService, secret: Secret, config: ConfigMap): Deployment {
   const baseUrl = "mg.burbn.de"
@@ -183,7 +190,17 @@ function createDirectusDeployments(website: WebService, secret: Secret, config: 
                 {name: "EMAIL_MAILGUN_API_KEY", valueFrom: {secretKeyRef: {name: secret.metadata.name, key: "mg-api-key"}}
                 },
                 {name:"ASSETS_TRANSFORM_IMAGE_MAX_DIMENSION", value: "10000"},
-                {name:"FLOWS_ENV_ALLOW_LIST", value: "ISR_TOKEN_BURBN,ISR_TOKEN_BAHRENBERG"}
+                {name:"FLOWS_ENV_ALLOW_LIST", value: "ISR_TOKEN_BURBN,ISR_TOKEN_BAHRENBERG"},
+                {name:"METRICS_ENABLED", value: "true"},
+                {
+                  name: "METRICS_TOKENS",
+                  valueFrom: {
+                    secretKeyRef: {
+                      name: secret.metadata.name,
+                      key: "metrics-token"
+                    }
+                  }
+                }
 
               ],
 
@@ -217,7 +234,15 @@ function createDirectusService(webservice: WebService): k8s.core.v1.Service {
   return new k8s.core.v1.Service(webservice.name, {
         "metadata": {
           name: webservice.name,
-          namespace: webservice.namespace.metadata.name
+          namespace: webservice.namespace.metadata.name,
+          labels: {
+            "app": webservice.name,
+            "component": "cms",
+            "managed-by": "pulumi",
+            "version": versions.directus.version,
+            "name": webservice.name,
+            "service-criticality": "1"
+          }
         },
         "spec": {
           "ports": [
@@ -267,4 +292,56 @@ function createDirectusIngress(webservice: WebService): k8s.networking.v1.Ingres
         }
       }
   );
+}
+
+function createDirectusMetricsSecret(
+  webservice: WebService,
+  metricsToken: pulumi.Output<string>
+): k8s.core.v1.Secret {
+  return new k8s.core.v1.Secret("directus-metrics-auth", {
+    metadata: {
+      name: "directus-metrics-auth",
+      namespace: webservice.namespace.metadata.name
+    },
+    stringData: {
+      authorization: metricsToken
+    }
+  });
+}
+
+function createDirectusServiceMonitor(
+  webservice: WebService,
+  authSecret: k8s.core.v1.Secret
+): k8s.apiextensions.CustomResource {
+  return new k8s.apiextensions.CustomResource("directus-servicemonitor", {
+    apiVersion: "monitoring.coreos.com/v1",
+    kind: "ServiceMonitor",
+    metadata: {
+      name: "directus-metrics",
+      namespace: webservice.namespace.metadata.name,
+      labels: {
+        "release": "kube-prometheus-stack"
+      }
+    },
+    spec: {
+      selector: {
+        matchLabels: {
+          name: webservice.name
+        }
+      },
+      endpoints: [{
+        port: "http",
+        path: "/metrics",
+        interval: "30s",
+        scrapeTimeout: "10s",
+        authorization: {
+          type: "Metrics",
+          credentials: {
+            name: authSecret.metadata.name,
+            key: "authorization"
+          }
+        }
+      }]
+    }
+  });
 }

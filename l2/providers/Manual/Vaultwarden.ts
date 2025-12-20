@@ -97,7 +97,15 @@ function createVaultwardenService(webservice: WebService): k8s.core.v1.Service {
   return new k8s.core.v1.Service(webservice.name, {
         "metadata": {
           name: webservice.name,
-          namespace: webservice.namespace.metadata.name
+          namespace: webservice.namespace.metadata.name,
+          labels: {
+            "app": webservice.name,
+            "component": "password-manager",
+            "managed-by": "pulumi",
+            "version": webservice.imageTag,
+            "name": webservice.name,
+            "service-criticality": "1"
+          }
         },
         "spec": {
           "ports": [

@@ -135,7 +135,15 @@ export function createSurrealManual() {
  new Service(name, {
   "metadata": {
    name: name,
-   namespace: namespace.metadata.name
+   namespace: namespace.metadata.name,
+   labels: {
+    "app": name,
+    "component": "database",
+    "managed-by": "pulumi",
+    "version": versions.surrealDB.version,
+    "name": name,
+    "service-criticality": "3"
+   }
   },
   "spec": {
    "ports": [

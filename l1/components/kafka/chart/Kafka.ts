@@ -10,6 +10,12 @@ export function createKafka(namespace: Namespace, secret: Secret) {
       repo: "https://charts.bitnami.com/bitnami"
     },
     values: {
+      "commonLabels": {
+        "app": "kafka",
+        "component": "message-broker",
+        "managed-by": "pulumi",
+        "service-criticality": "2"
+      },
       "auth":
           {
             "rbac": {
