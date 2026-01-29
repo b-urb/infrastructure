@@ -44,7 +44,7 @@ export const versions: Record<string, VersionEntry> = {
     registryUrl: "https://grafana.github.io/helm-charts"
   },
   kubernetesMonitoring: {
-    version: "3.7.4",
+    version: "3.7.5",
     depName: "k8s-monitoring",
     datasource: "helm",
     versioning: "helm",
