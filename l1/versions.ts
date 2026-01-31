@@ -10,7 +10,7 @@ export interface VersionEntry {
 
 export const versions: Record<string, VersionEntry> = {
   surrealDB: {
-    version: "v2.4.1",
+    version: "v2.6",
     depName: "surrealdb/surrealdb",
     datasource: "docker",
     versioning: "semver-coerced",
@@ -37,7 +37,7 @@ export const versions: Record<string, VersionEntry> = {
     registryUrl: "https://prometheus-community.github.io/helm-charts"
   },
   loki: {
-    version: "6.49.0",
+    version: "6.51.0",
     depName: "loki",
     datasource: "helm",
     versioning: "helm",
