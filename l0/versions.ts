@@ -17,7 +17,7 @@ export const versions: Record<string, VersionEntry> = {
     registryUrl: "https://juicedata.github.io/charts"
   },
   cilium: {
-    version: "1.18.6",
+    version: "1.19.0",
     depName: "cilium",
     datasource: "helm",
     versioning: "helm",
@@ -45,7 +45,7 @@ export const versions: Record<string, VersionEntry> = {
     registryUrl: "https://istio-release.storage.googleapis.com/charts"
   },
   hcloudCSI: {
-    version: "2.18.3",
+    version: "2.19.0",
     depName: "hcloud-csi",
     datasource: "helm",
     versioning: "helm",
