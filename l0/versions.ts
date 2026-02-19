@@ -45,7 +45,7 @@ export const versions: Record<string, VersionEntry> = {
     registryUrl: "https://istio-release.storage.googleapis.com/charts"
   },
   hcloudCSI: {
-    version: "2.19.0",
+    version: "2.19.1",
     depName: "hcloud-csi",
     datasource: "helm",
     versioning: "helm",
