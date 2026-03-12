@@ -37,7 +37,7 @@ export const versions: Record<string, VersionEntry> = {
     registryUrl: "https://prometheus-community.github.io/helm-charts"
   },
   loki: {
-    version: "6.53.0",
+    version: "6.55.0",
     depName: "loki",
     datasource: "helm",
     versioning: "helm",
