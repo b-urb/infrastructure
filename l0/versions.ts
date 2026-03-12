@@ -24,28 +24,28 @@ export const versions: Record<string, VersionEntry> = {
     registryUrl: "https://helm.cilium.io/"
   },
   certManager: {
-    version: "v1.19.4",
+    version: "v1.20.0",
     depName: "cert-manager",
     datasource: "helm",
     versioning: "semver-coerced",
     registryUrl: "https://charts.jetstack.io"
   },
   istioBase: {
-    version: "1.28.3",
+    version: "1.29.1",
     depName: "base",
     datasource: "helm",
     versioning: "helm",
     registryUrl: "https://istio-release.storage.googleapis.com/charts"
   },
   istioD: {
-    version: "1.28.3",
+    version: "1.29.1",
     depName: "istiod",
     datasource: "helm",
     versioning: "helm",
     registryUrl: "https://istio-release.storage.googleapis.com/charts"
   },
   hcloudCSI: {
-    version: "2.19.1",
+    version: "2.20.0",
     depName: "hcloud-csi",
     datasource: "helm",
     versioning: "helm",
