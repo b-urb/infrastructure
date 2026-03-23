@@ -17,7 +17,7 @@ export const versions: Record<string, VersionEntry> = {
     registryUrl: "https://juicedata.github.io/charts"
   },
   cilium: {
-    version: "1.19.1",
+    version: "1.19.2",
     depName: "cilium",
     datasource: "helm",
     versioning: "helm",
