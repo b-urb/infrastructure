@@ -30,7 +30,7 @@ export const versions: Record<string, VersionEntry> = {
     registryUrl: "oci://registry-1.docker.io/bitnamicharts/postgresql"
   },
   kubePrometheusStack: {
-    version: "80.14.4",
+    version: "84.5.0",
     depName: "kube-prometheus-stack",
     datasource: "helm",
     versioning: "helm",
