@@ -5,7 +5,7 @@
 # for all branches except the master.
 # Only for master branch merges, the main `pulumi` job is executed automatically.
 image:
-  name: pulumi/pulumi:3.231.0
+  name: pulumi/pulumi:3.237.0
   entrypoint:
     - '/usr/bin/env'
     - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
