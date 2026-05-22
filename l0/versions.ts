@@ -10,7 +10,7 @@ export interface VersionEntry {
 
 export const versions: Record<string, VersionEntry> = {
   juiceCsiDriver: {
-    version: "0.31.6",
+    version: "0.31.7",
     depName: "juicefs-csi-driver",
     datasource: "helm",
     versioning: "helm",
