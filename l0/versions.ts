@@ -24,7 +24,7 @@ export const versions: Record<string, VersionEntry> = {
     registryUrl: "https://helm.cilium.io/"
   },
   certManager: {
-    version: "v1.20.2",
+    version: "v1.20.3",
     depName: "cert-manager",
     datasource: "helm",
     versioning: "semver-coerced",
