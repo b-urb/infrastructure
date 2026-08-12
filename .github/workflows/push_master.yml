@@ -30,7 +30,7 @@ jobs:
         shell: bash
       - run: npm install
         working-directory: ${{ matrix.workdir }}
-      - uses: pulumi/actions@v6
+      - uses: pulumi/actions@v7
         with:
           command: preview
           work-dir: ${{ matrix.workdir }}
