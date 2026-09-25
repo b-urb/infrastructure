@@ -20,7 +20,7 @@ jobs:
           echo "${{ secrets.KUBE_CONFIG }}" | base64 -d >  $HOME/.kube/config
         shell: bash
       - name: Deploy with Pulumi
-        uses: pulumi/actions@v6
+        uses: pulumi/actions@v7
         with:
           command: up
           stack-name: openstack
@@ -48,7 +48,7 @@ jobs:
         run: |
           echo "PREVIOUS_VERSION=kubectl get stacks -n flux-system l1 -o jsonpath='{.spec.branch}' | awk -F'/' '{print $NF}'" >> $GITHUB_ENV
       - name: Deploy with Pulumi
-        uses: pulumi/actions@v6
+        uses: pulumi/actions@v7
         with:
           command: up
           stack-name: hetzner
