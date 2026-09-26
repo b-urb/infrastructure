@@ -16,13 +16,13 @@ export const versions: Record<string, VersionEntry> = {
     versioning: "docker",
   },
   vaultwarden: {
-    version: "1.36.0-alpine",
+    version: "1.37.3-alpine",
     depName: "vaultwarden/server",
     datasource: "docker",
     versioning: "docker",
   },
   plane: {
-    version: "1.5.1",
+    version: "1.8.2",
     depName: "plane-ce",
     datasource: "helm",
     versioning: "helm",
